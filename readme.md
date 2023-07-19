@@ -29,7 +29,7 @@ yum update -y
 yum install httpd httpd-tools -y
 ~~~
 
-### Adjust Apache:
+### Adjust HTTPD:
 ~~~
 #Enable status page (required for Instana)
 echo "<Location /server-status>" >> /etc/httpd/conf/httpd.conf 
@@ -58,12 +58,16 @@ firewall-cmd --permanent --zone=public --add-service=http
 firewall-cmd --permanent --zone=public --add-port=8080/tcp
 firewall-cmd --permanent --zone=public --add-service=https
 systemctl reload firewalld
-
+~~~
+### Enable & start HTTPD:
+~~~
 #Start
 sudo systemctl daemon-reload
 systemctl restart httpd
 systemctl enable httpd
-
+~~~
+### Install MySQL/MariaDB:
+~~~
 #MySQL/MariaDB
 yum install mariadb-server mariadb -y
 systemctl start mariadb
@@ -84,7 +88,9 @@ UPDATE mysql.user SET Password=PASSWORD('ibm4all') WHERE User='root';
 -- make changes immediately
 FLUSH PRIVILEGES;
 EOS
-
+~~~
+### Install PHP:
+~~~
 yum install php php-fpm php-mysqlnd php-opcache php-gd php-xml php-mbstring -y
 echo "pm.status_path = /status" >> /etc/php-fpm.d/www.conf 
 systemctl start php-fpm

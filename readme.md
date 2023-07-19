@@ -1,17 +1,14 @@
 # instana-workloads-lamp
 
-
-
-
-
 ## Update
 ~~~
 yum update -y
 ~~~
 
 ## Instana setup
+### Install:
 ~~~
-yum install python3-pip
+yum -y install python3-pip
 pip3 install instana
 curl -o setup_agent.sh https://setup.instana.io/agent && chmod 700 ./setup_agent.sh && sudo ./setup_agent.sh -a lWrVCHHoSKOV1Ix8AevOeA -d lWrVCHHoSKOV1Ix8AevOeA -t dynamic -e aiops3.amsiic.ibm.com:1444 -y -s
 ~~~
@@ -22,8 +19,8 @@ curl -o setup_agent.sh https://setup.instana.io/agent && chmod 700 ./setup_agent
 echo "# Hardware & Zone" >> /opt/instana/agent/etc/instana/configuration.yaml
 echo "com.instana.plugin.generic.hardware:" >> /opt/instana/agent/etc/instana/configuration.yaml
 echo " enabled: true # disabled by default" >> /opt/instana/agent/etc/instana/configuration.yaml
-echo " availability-zone: 'IBM Cloud / Demo'" >> /opt/instana/agent/etc/instana/configuration.yaml
 echo " availability-zone: 'IBM Innovation Studio / VMware ESX / LAMP'" >> /opt/instana/agent/etc/instana/configuration.yaml
+
 #HTTPD
 echo "com.instana.plugin.httpd:" >> /opt/instana/agent/etc/instana/configuration.yaml
 echo " tracing:" >> /opt/instana/agent/etc/instana/configuration.yaml
@@ -33,7 +30,7 @@ echo " enabled: false" >> /opt/instana/agent/etc/instana/configuration.yaml
 ## HTTPD
 ### Install:
 ~~~
-yum install httpd httpd-tools -y
+yum -y install httpd httpd-tools
 ~~~
 
 ### Configure:
@@ -108,7 +105,7 @@ EOS
 ## PHP
 ### Install:
 ~~~
-yum install php php-fpm php-mysqlnd php-opcache php-gd php-xml php-mbstring -y
+yum -y install php php-fpm php-mysqlnd php-opcache php-gd php-xml php-mbstring
 ~~~
 
 ### Configure:

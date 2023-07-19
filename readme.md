@@ -9,6 +9,26 @@
 yum update -y
 ~~~
 
+## Instana setup
+~~~
+yum install python3-pip
+pip3 install instana
+curl -o setup_agent.sh https://setup.instana.io/agent && chmod 700 ./setup_agent.sh && sudo ./setup_agent.sh -a lWrVCHHoSKOV1Ix8AevOeA -d lWrVCHHoSKOV1Ix8AevOeA -t dynamic -e aiops3.amsiic.ibm.com:1444 -y -s
+~~~
+
+### Configure:
+~~~
+#Zone
+echo "# Hardware & Zone" >> /opt/instana/agent/etc/instana/configuration.yaml
+echo "com.instana.plugin.generic.hardware:" >> /opt/instana/agent/etc/instana/configuration.yaml
+echo " enabled: true # disabled by default" >> /opt/instana/agent/etc/instana/configuration.yaml
+echo " availability-zone: 'IBM Cloud / Demo'" >> /opt/instana/agent/etc/instana/configuration.yaml
+echo " availability-zone: 'IBM Innovation Studio / VMware ESX / LAMP'" >> /opt/instana/agent/etc/instana/configuration.yaml
+#HTTPD
+echo "com.instana.plugin.httpd:" >> /opt/instana/agent/etc/instana/configuration.yaml
+echo " tracing:" >> /opt/instana/agent/etc/instana/configuration.yaml
+echo " enabled: false" >> /opt/instana/agent/etc/instana/configuration.yaml
+~~~
 
 ## HTTPD
 ### Install:
@@ -61,6 +81,10 @@ systemctl enable httpd
 ~~~
 #MySQL/MariaDB
 yum install mariadb-server mariadb -y
+~~~
+
+### Configure:
+~~~
 systemctl start mariadb
 systemctl enable mariadb
 mysql_secure_installation
@@ -80,36 +104,26 @@ UPDATE mysql.user SET Password=PASSWORD('ibm4all') WHERE User='root';
 FLUSH PRIVILEGES;
 EOS
 ~~~
-### Install PHP:
+
+## PHP
+### Install:
 ~~~
 yum install php php-fpm php-mysqlnd php-opcache php-gd php-xml php-mbstring -y
+~~~
+
+### Configure:
+~~~
 echo "pm.status_path = /status" >> /etc/php-fpm.d/www.conf 
 systemctl start php-fpm
 systemctl enable php-fpm
 systemctl enable php-fpm
-
 setsebool -P httpd_execmem 1
 setsebool -P httpd_can_network_connect on
+~~~
+
+## Create test PHP workload
+~~~
 echo "<?php phpinfo(); ?>" > /var/www/html/info.php
 echo "SetHandler application/x-httpd-php" >> /etc/httpd/conf/httpd.conf 
 systemctl restart httpd
-
-#Instana setup
-curl -o setup_agent.sh https://setup.instana.io/agent && chmod 700 ./setup_agent.sh && sudo ./setup_agent.sh -a lWrVCHHoSKOV1Ix8AevOeA -d lWrVCHHoSKOV1Ix8AevOeA -t dynamic -e aiops3.amsiic.ibm.com:1444 -y -s
-yum install python3-pip
-pip3 install instana
-
-#Instana config
-#HTTPD
-echo "com.instana.plugin.httpd:" >> /opt/instana/agent/etc/instana/configuration.yaml
-echo " tracing:" >> /opt/instana/agent/etc/instana/configuration.yaml
-echo " enabled: false" >> /opt/instana/agent/etc/instana/configuration.yaml
-
-#Zone
-echo "# Hardware & Zone" >> /opt/instana/agent/etc/instana/configuration.yaml
-echo "com.instana.plugin.generic.hardware:" >> /opt/instana/agent/etc/instana/configuration.yaml
-echo " enabled: true # disabled by default" >> /opt/instana/agent/etc/instana/configuration.yaml
-echo " availability-zone: 'IBM Cloud / Demo'" >> /opt/instana/agent/etc/instana/configuration.yaml
-
-
-echo " availability-zone: 'IBM Innovation Studio / VMware ESX / LAMP'" >> /opt/instana/agent/etc/instana/configuration.yaml
+~~~

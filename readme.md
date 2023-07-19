@@ -1,35 +1,22 @@
 # instana-workloads-lamp
 
 
-~~~
-echo "kernel.shmmni = 4096" >> /etc/sysctl.conf
-echo "kernel.shmall = 2097152" >> /etc/sysctl.conf
-echo "kernel.shmmax = 268435456" >> /etc/sysctl.conf
-echo "kernel.sem = 32 4096 32 128" >> /etc/sysctl.conf
-echo "fs.file-max = 524288" >> /etc/sysctl.conf
-sysctl -p
-
-echo "mqm hard nofile 10240" >> /etc/security/limits.conf 
-echo "mqm soft nofile 10240" >> /etc/security/limits.conf 
-
-yum -y install bash bc ca-certificates file findutils gawk glibc-common grep passwd procps-ng sed shadow-utils tar util-linux which wget
-~~~
 
 
 
-## Prerequisites
-
-### Update
+## Update
 ~~~
 yum update -y
 ~~~
 
-### Install HTTPD
+
+## HTTPD
+### Install:
 ~~~
 yum install httpd httpd-tools -y
 ~~~
 
-### Adjust HTTPD:
+### Configure:
 ~~~
 #Enable status page (required for Instana)
 echo "<Location /server-status>" >> /etc/httpd/conf/httpd.conf 
@@ -52,7 +39,7 @@ cat /etc/httpd/conf/httpd.conf.new > /etc/httpd/conf/httpd.conf
 semanage port -m -t http_port_t -p tcp 8080
 ~~~
 
-### Adjust Firewall:
+### Firewall:
 ~~~
 #Firewall
 firewall-cmd --permanent --zone=public --add-service=http
@@ -61,7 +48,7 @@ firewall-cmd --permanent --zone=public --add-service=https
 systemctl reload firewalld
 ~~~
 
-### Enable & start HTTPD:
+### Enable & start:
 ~~~
 #Start
 sudo systemctl daemon-reload
@@ -69,7 +56,8 @@ systemctl restart httpd
 systemctl enable httpd
 ~~~
 
-### Install MySQL/MariaDB:
+## MySQL/MariaDB
+### Install:
 ~~~
 #MySQL/MariaDB
 yum install mariadb-server mariadb -y

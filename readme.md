@@ -24,8 +24,8 @@ yum -y install bash bc ca-certificates file findutils gawk glibc-common grep pas
 yum update -y
 ~~~
 
+### Install HTTPD
 ~~~
-#Install HTTPD
 yum install httpd httpd-tools -y
 
 #Enable status page

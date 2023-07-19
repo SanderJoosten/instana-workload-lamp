@@ -30,9 +30,8 @@ yum install httpd httpd-tools -y
 ~~~
 
 ### Adjust Apache:
- - 
 ~~~
-#Enable status page
+#Enable status page (required for Instana)
 echo "<Location /server-status>" 								>> /etc/httpd/conf/httpd.conf 
 echo "    SetHandler server-status" 							>> /etc/httpd/conf/httpd.conf 
 echo "</Location>" 												>> /etc/httpd/conf/httpd.conf 

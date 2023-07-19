@@ -29,7 +29,7 @@ yum update -y
 yum install httpd httpd-tools -y
 ~~~
 
-Adjust Apache:
+### Adjust Apache:
  - 
 ~~~
 #Enable status page

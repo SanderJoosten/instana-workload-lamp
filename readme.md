@@ -27,7 +27,11 @@ yum update -y
 ### Install HTTPD
 ~~~
 yum install httpd httpd-tools -y
+~~~
 
+Adjust Apache:
+ - 
+~~~
 #Enable status page
 echo "<Location /server-status>" 								>> /etc/httpd/conf/httpd.conf 
 echo "    SetHandler server-status" 							>> /etc/httpd/conf/httpd.conf 
@@ -47,7 +51,9 @@ chown apache:apache /var/www/html -R
 sed 's/^Listen 80/Listen 8080/g' /etc/httpd/conf/httpd.conf 	> /etc/httpd/conf/httpd.conf.new
 cat /etc/httpd/conf/httpd.conf.new 								> /etc/httpd/conf/httpd.conf
 semanage port -m -t http_port_t -p tcp 8080
+~~~
 
+~~~
 #Firewall
 firewall-cmd --permanent --zone=public --add-service=http
 firewall-cmd --permanent --zone=public --add-port=8080/tcp

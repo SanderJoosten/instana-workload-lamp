@@ -51,6 +51,7 @@ sed 's/^Listen 80/Listen 8080/g' /etc/httpd/conf/httpd.conf > /etc/httpd/conf/ht
 cat /etc/httpd/conf/httpd.conf.new > /etc/httpd/conf/httpd.conf
 semanage port -m -t http_port_t -p tcp 8080
 ~~~
+
 ### Adjust Firewall:
 ~~~
 #Firewall
@@ -59,6 +60,7 @@ firewall-cmd --permanent --zone=public --add-port=8080/tcp
 firewall-cmd --permanent --zone=public --add-service=https
 systemctl reload firewalld
 ~~~
+
 ### Enable & start HTTPD:
 ~~~
 #Start
@@ -66,6 +68,7 @@ sudo systemctl daemon-reload
 systemctl restart httpd
 systemctl enable httpd
 ~~~
+
 ### Install MySQL/MariaDB:
 ~~~
 #MySQL/MariaDB
